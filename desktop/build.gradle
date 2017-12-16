@@ -3,7 +3,11 @@ apply plugin: "java"
 sourceCompatibility = 1.6
 sourceSets.main.java.srcDirs = [ "src/" ]
 
+<<<<<<< HEAD
 project.ext.mainClassName = "com.nekotamer.game.desktop.DesktopLauncher"
+=======
+project.ext.mainClassName = "com.mygdx.game.desktop.DesktopLauncher"
+>>>>>>> 33d41bbaec9eb3eee3daa8c18d856110b4228c1c
 project.ext.assetsDir = new File("../core/assets");
 
 task run(dependsOn: classes, type: JavaExec) {

@@ -19,7 +19,11 @@ allprojects {
 
     version = '1.0'
     ext {
+<<<<<<< HEAD
         appName = "nekotamer-game"
+=======
+        appName = "neko-tamer"
+>>>>>>> 33d41bbaec9eb3eee3daa8c18d856110b4228c1c
         gdxVersion = '1.9.7'
         roboVMVersion = '2.3.1'
         box2DLightsVersion = '1.4'
