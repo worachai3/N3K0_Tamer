@@ -24,8 +24,8 @@ public class World {
 	}
 
 	public void update(float delta) {
-		cat.update(delta);
-		alien.update(delta);
+		cat.update(delta, this);
+		alien.update(delta, this);
 
 		if (Gdx.input.isButtonPressed(0) && !clicked) {
 			foodList.add(new Food(Gdx.input.getX(), height-Gdx.input.getY()));

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 public class WorldRenderer {
@@ -33,17 +34,19 @@ public class WorldRenderer {
 
 	public void render(float delta, SpriteBatch batch) {
 
-		Vector2 catPos = cat.getPosition();
-		Vector2 alienPos = alien.getPosition();
+//		Vector2 catPos = cat.getPosition();
+//		Vector2 alienPos = alien.getPosition();
+		Rectangle catHitbox = cat.getHitbox();
+		Rectangle alienHitbox = alien.getHitbox();
 		
 		batch.begin();
 		for(Food food : foodList) {
-			Vector2 foodPos = food.getPosition();
-			batch.draw(foodImg, foodPos.x, foodPos.y);
+//			Vector2 foodPos = food.getPosition();
+			Rectangle foodHitbox = food.getHitbox();
+			batch.draw(foodImg, foodHitbox.x, foodHitbox.y, foodHitbox.width, foodHitbox.height);
 		}
-		batch.draw(catImg, catPos.x, catPos.y);
-		batch.draw(alienImg, alienPos.x, alienPos.y);
-		
+		batch.draw(catImg, catHitbox.x, catHitbox.y, catHitbox.width, catHitbox.height);
+		batch.draw(alienImg, alienHitbox.x, alienHitbox.y, alienHitbox.width, alienHitbox.height);
 		batch.end();
 	}
 }
