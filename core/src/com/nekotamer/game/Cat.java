@@ -6,7 +6,6 @@ public class Cat {
 	private Vector2 position;
 
 	public Cat(int x, int y) {
-
 		position = new Vector2(x, y);
 	}
 
