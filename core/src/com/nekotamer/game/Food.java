@@ -21,7 +21,6 @@ public class Food {
 		hitbox = getHitbox();
 		if (Math.abs((hitbox.x + hitbox.width/2) - (other.x + other.width/2)) <= hitbox.width/2 + other.width/2
 			&& Math.abs((hitbox.y + hitbox.height/2) - (other.y + other.height/2)) <= hitbox.height/2 + other.height/2) {
-			System.out.println("eated");
 			return true;
 		} else {
 			return false;

@@ -23,9 +23,9 @@ public class Cat {
 
 	public boolean getEated(Rectangle other) {
 		hitbox = getHitbox();
-		if (Math.abs((hitbox.x + hitbox.width/2) - (other.x + other.width/2)) <= hitbox.width/2 + other.width/2
-			&& Math.abs((hitbox.y + hitbox.height/2) - (other.y + other.height/2)) <= hitbox.height/2 + other.height/2) {
-			System.out.println("eated");
+		if (Math.abs((hitbox.x + hitbox.width / 2) - (other.x + other.width / 2)) <= hitbox.width / 2 + other.width / 2
+				&& Math.abs((hitbox.y + hitbox.height / 2) - (other.y + other.height / 2)) <= hitbox.height / 2
+						+ other.height / 2) {
 			return true;
 		} else {
 			return false;
@@ -70,7 +70,6 @@ public class Cat {
 		if (hitbox.x <= 0) {
 			axisX = 1;
 			time = -5;
-			System.out.println("fuck");
 		}
 		if (hitbox.y <= 0) {
 			axisY = 1;
@@ -79,7 +78,6 @@ public class Cat {
 		if (hitbox.x + hitbox.width >= World.width) {
 			axisX = 0;
 			time = -5;
-			System.out.println("fuck");
 		}
 		if (hitbox.y + hitbox.height >= World.height) {
 			axisY = 0;
@@ -97,23 +95,19 @@ public class Cat {
 			} else {
 				hitbox.y -= speed;
 			}
-			System.out.println("hitboxX: " + hitbox.x + " " + "hitboxY: " + hitbox.y + " " + "axisX: " + axisX + " "
-					+ " " + "axisY: " + axisY);
 		}
 	}
-	
+
 	public boolean noTarget() {
 		if (targetFood == null) {
 			return true;
-		}
-		else {
+		} else {
 			return false;
 		}
 	}
-	
+
 	public void setTarget(Food target) {
 		targetFood = target;
-		System.out.println(targetFood);
 	}
 
 	// public Vector2 getPosition() {

@@ -19,6 +19,7 @@ public class World {
 	ArrayList<Alien> alienList;
 	ArrayList<Cat> catList;
 	ArrayList<Food> foodList;
+	BuyMenu buyMenu;
 	// ArrayList<Food> removedFoodList;
 	// Iterator<Food> addFoodList;
 
@@ -28,6 +29,7 @@ public class World {
 		this.nekoTamer = nekoTamer;
 		// cat = new Cat(100, 100);
 		// alien = new Alien(800, 200, 5);
+		buyMenu = new BuyMenu(0, height - 200);
 		alienList = new ArrayList<Alien>();
 		catList = new ArrayList<Cat>();
 		foodList = new ArrayList<Food>();
@@ -39,6 +41,7 @@ public class World {
 
 	public void update(float delta) {
 		time += delta;
+//		System.out.println(Gdx.input.getX()+" "+Gdx.input.getY());
 		// System.out.println(time);
 		// cat.update(delta, this);
 		// alien.update(delta, this);
@@ -49,7 +52,7 @@ public class World {
 			cat.update(delta, this);
 			for (int j = 0; j < foodList.size(); j++) {
 				Food food = foodList.get(j);
-				if(cat.noTarget()) {
+				if (cat.noTarget()) {
 					cat.setTarget(food);
 				}
 				if (food.getEated(cat.getHitbox())) {
@@ -68,17 +71,22 @@ public class World {
 			alien.update(delta, this);
 			for (int j = 0; j < catList.size(); j++) {
 				Cat cat = catList.get(j);
+				if (alien.noTarget()) {
+					alien.setTarget(cat);
+				}
 				if (cat.getEated(alien.getHitbox())) {
 					// System.out.println(i);
 					// Food i = foodList.get(foodList.indexOf(food));
 					// removedFoodList.add(food);
+					alien.setTarget(null);
 					catList.remove(cat);
 					j--;
-					if (alien.isDead()) {
-						alienList.remove(alien);
-						i--;
-					}
 				}
+				
+			}
+			if (alien.isDead()) {
+				alienList.remove(alien);
+				i--;
 			}
 		}
 
@@ -93,15 +101,15 @@ public class World {
 		}
 	}
 
-	public float getAngle(float x, float y, float x2, float y2) {
-		float angle = (float) Math.toDegrees(Math.atan2(y - y2, x - x2));
-
-		if (angle < 0) {
-			angle += 360;
-		}
-
-		return angle;
-	}
+	// public float getAngle(float x, float y, float x2, float y2) {
+	// float angle = (float) Math.toDegrees(Math.atan2(y - y2, x - x2));
+	//
+	// if (angle < 0) {
+	// angle += 360;
+	// }
+	//
+	// return angle;
+	// }
 
 	// private boolean catIsCloser(Alien alien, Cat cat, float oldDistance){
 	// // calculate angle from enemy to player
@@ -150,6 +158,10 @@ public class World {
 	// }
 	// }
 
+	public BuyMenu getBuyMenu() {
+		return buyMenu;
+	}
+	
 	public ArrayList<Food> getFood() {
 		return foodList;
 	}

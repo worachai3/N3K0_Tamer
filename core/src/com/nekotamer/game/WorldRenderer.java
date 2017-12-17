@@ -13,6 +13,7 @@ public class WorldRenderer {
 	private World world;
 	private Alien alien;
 	private Cat cat;
+	private BuyMenu buyMenu;
 	private ArrayList<Alien> alienList;
 	private ArrayList<Cat> catList;
 	private ArrayList<Food> foodList;
@@ -26,6 +27,7 @@ public class WorldRenderer {
 		this.nekoTamer = nekoTamer;
 		this.world = world;
 
+		buyMenu = world.getBuyMenu();
 		catList = world.getCat();
 		alienList = world.getAlien();
 		foodList = world.getFood();
@@ -40,9 +42,8 @@ public class WorldRenderer {
 		// Vector2 catPos = cat.getPosition();
 		// Vector2 alienPos = alien.getPosition();
 
-
-
 		batch.begin();
+		buyMenu.render(delta, batch);
 		for (Food food : foodList) {
 			// Vector2 foodPos = food.getPosition();
 			Rectangle foodHitbox = food.getHitbox();

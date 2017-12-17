@@ -24,7 +24,7 @@ public class GameScreen extends ScreenAdapter {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		SpriteBatch batch = nekoTamer.batch;
-		
+
 		worldRenderer.render(delta, batch);
 	}
 
