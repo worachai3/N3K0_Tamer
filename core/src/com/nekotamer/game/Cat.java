@@ -8,24 +8,25 @@ public class Cat {
 	private Rectangle hitbox;
 	private Alien alien;
 	private Food targetFood;
-	
+
 	private float time;
+	private float coinTime;
 	private float hungerTime;
-	
+
 	private int axisX = 0;
 	private int axisY = 0;
 	private int hunger;
 	private boolean dead = false;
+	private boolean spawnCoin = false;
 
 	private int speed = 3;
 
 	public Cat(int x, int y, int hunger) {
-		// position = new Vector2(x, y);
 		hitbox = new Rectangle(x, y, 142, 119);
 		this.hunger = hunger;
 		hungerTime = 0;
 	}
-	
+
 	public int getHunger() {
 		return this.hunger;
 	}
@@ -49,13 +50,12 @@ public class Cat {
 		}
 		if (hunger > 3) {
 			speed = 3;
-		}
-		else if (hunger > 1) {
+		} else if (hunger > 1) {
 			speed = 2;
-		}
-		else if (hunger == 1) {
+		} else if (hunger == 1) {
 			speed = 1;
 		}
+
 		hungerTime += delta;
 		if (hungerTime >= 6) {
 			this.hunger -= 1;
@@ -63,6 +63,12 @@ public class Cat {
 		}
 		if (hunger <= 0) {
 			dead = true;
+		}
+
+		coinTime += delta;
+		if (coinTime >= 5) {
+			coinTime = 0;
+			spawnCoin = true;
 		}
 	}
 
@@ -117,12 +123,12 @@ public class Cat {
 			}
 		}
 	}
-	
+
 	public void fed() {
 		hunger += 1;
 		hungerTime = 0;
 	}
-	
+
 	public boolean isDead() {
 		return dead;
 	}
@@ -133,6 +139,14 @@ public class Cat {
 		} else {
 			return false;
 		}
+	}
+
+	public boolean getSpawnCoin() {
+		return spawnCoin;
+	}
+
+	public void setSpawnCoin() {
+		spawnCoin = false;
 	}
 
 	public void setTarget(Food target) {

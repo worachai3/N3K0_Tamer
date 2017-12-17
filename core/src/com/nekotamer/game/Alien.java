@@ -94,12 +94,10 @@ public class Alien {
 
 	public boolean getClicked(int x, int y) {
 		if (hitbox.x <= x && hitbox.y <= 720 - y && hitbox.x + hitbox.width >= x && hitbox.y + hitbox.height >= 720 - y) {
-			System.out.println("clicked");
 			return true;
 		} else {
 			return false;
 		}
-
 	}
 
 	public boolean noTarget() {

@@ -45,13 +45,6 @@ public class BuyMenu {
 		}
 	}
 
-	private boolean getHover(int x, int y) {
-		if (hitbox.x <= x && hitbox.y <= 720 - y && hitbox.x + hitbox.width >= x) {
-			return true;
-		} else {
-			return false;
-		}
-	}
 	
 	public void bought() {
 		nCat--;
@@ -61,6 +54,14 @@ public class BuyMenu {
 		return nCat;
 	}
 
+	private boolean getHover(int x, int y) {
+		if (hitbox.x <= x && hitbox.y <= 720 - y && hitbox.x + hitbox.width >= x) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
 	public boolean getClicked() {
 		int x = Gdx.input.getX();
 		int y = Gdx.input.getY();

@@ -8,15 +8,19 @@ import com.badlogic.gdx.Gdx;
 public class World {
 	public static final int width = 1200;
 	public static final int height = 720;
-
+	
 	private float time = 0;
-
+	private int nCat;
+	private int nAlien;
+		
 	private NekoTamer nekoTamer;
+	private BuyMenu buyMenu;
+	private Player player;
+
 	private ArrayList<Alien> alienList;
 	private ArrayList<Cat> catList;
 	private ArrayList<Food> foodList;
-	private BuyMenu buyMenu;
-	private Player player;
+	private ArrayList<Coin> coinList;
 
 	private boolean clicked = false;
 
@@ -26,28 +30,39 @@ public class World {
 		buyMenu = new BuyMenu(0, height - 200, player);
 		alienList = new ArrayList<Alien>();
 		catList = new ArrayList<Cat>();
+		coinList = new ArrayList<Coin>();
 		foodList = new ArrayList<Food>();
-		
+
 		// Start
 		catList.add(new Cat(100, 100, 5));
-		alienList.add(new Alien(800, 200, 5));
+		nCat++;
+		nAlien = 1;
 	}
-	
+
 	private void spawnCat(int n) {
-		for (int i = 0;i < n;i++) {
+		for (int i = 0; i < n; i++) {
 			Random rand = new Random();
-			catList.add(new Cat(rand.nextInt(width - 300), rand.nextInt(height - 300),5));
+			catList.add(new Cat(rand.nextInt(width - 300), rand.nextInt(height - 300), 5));
+			nCat++;
 			buyMenu.bought();
 		}
 	}
 
 	public void update(float delta) {
+		Random rand = new Random();
 		time += delta;
-		
 		buyMenu.update(delta);
 		spawnCat(buyMenu.spawnNCat());
+	
+		if (time >= 6) {
+			nAlien++;
+			for (int i = 0;i < nAlien;i++) {
+				alienList.add(new Alien(rand.nextInt(width), 1000, 5));	
+			}
+			time = 0;
+		}
+	
 		for (int i = 0; i < catList.size(); i++) {
-			// food.update(delta, this);
 			Cat cat = catList.get(i);
 			cat.update(delta, this);
 			for (int j = 0; j < foodList.size(); j++) {
@@ -64,8 +79,23 @@ public class World {
 					j--;
 				}
 			}
+			if (cat.getSpawnCoin()) {
+				coinList.add(new Coin((int) cat.getHitbox().x, (int) cat.getHitbox().y));
+				cat.setSpawnCoin();
+			}
 			if (cat.isDead()) {
 				catList.remove(cat);
+				nCat--;
+			}
+		}
+
+		for (int i = 0; i < coinList.size(); i++) {
+			Coin coin = coinList.get(i);
+			coin.update(delta);
+			if (coin.isCollected()) {
+				coinList.remove(coin);
+				i--;
+				player.addMoney(3);
 			}
 		}
 
@@ -80,9 +110,9 @@ public class World {
 				if (cat.getEated(alien.getHitbox())) {
 					alien.setTarget(null);
 					catList.remove(cat);
+					nCat--;
 					j--;
 				}
-
 			}
 			if (alien.isDead()) {
 				alienList.remove(alien);
@@ -90,8 +120,9 @@ public class World {
 			}
 		}
 
-		if (Gdx.input.isButtonPressed(1) && !clicked) {
+		if (Gdx.input.isButtonPressed(1) && !clicked && player.getMoney() >= 1) {
 			foodList.add(new Food(Gdx.input.getX(), height - Gdx.input.getY(), this));
+			player.removeMoney(1);
 		}
 
 		if (!Gdx.input.isButtonPressed(1)) {
@@ -99,6 +130,10 @@ public class World {
 		} else {
 			clicked = true;
 		}
+	}
+
+	public Player getPlayer() {
+		return player;
 	}
 
 	public BuyMenu getBuyMenu() {
@@ -115,5 +150,9 @@ public class World {
 
 	public ArrayList<Alien> getAlien() {
 		return alienList;
+	}
+
+	public ArrayList<Coin> getCoin() {
+		return coinList;
 	}
 }
