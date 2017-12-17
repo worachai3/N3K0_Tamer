@@ -8,11 +8,13 @@ import com.badlogic.gdx.Gdx;
 public class World {
 	public static final int width = 1200;
 	public static final int height = 720;
-	
+
 	private float time = 0;
 	private int nCat;
 	private int nAlien;
-		
+	private boolean win;
+	private boolean lose;
+
 	private NekoTamer nekoTamer;
 	private BuyMenu buyMenu;
 	private Player player;
@@ -33,6 +35,8 @@ public class World {
 		coinList = new ArrayList<Coin>();
 		foodList = new ArrayList<Food>();
 
+		win = false;
+		lose = false;
 		// Start
 		catList.add(new Cat(100, 100, 5));
 		nCat++;
@@ -53,70 +57,77 @@ public class World {
 		time += delta;
 		buyMenu.update(delta);
 		spawnCat(buyMenu.spawnNCat());
-	
-		if (time >= 6) {
-			nAlien++;
-			for (int i = 0;i < nAlien;i++) {
-				alienList.add(new Alien(rand.nextInt(width), 1000, 5));	
-			}
-			time = 0;
+
+		if (nCat <= 0) {
+			lose = true;
+		} else if (nCat >= 10) {
+			win = true;
 		}
-	
-		for (int i = 0; i < catList.size(); i++) {
-			Cat cat = catList.get(i);
-			cat.update(delta, this);
-			for (int j = 0; j < foodList.size(); j++) {
-				Food food = foodList.get(j);
-				if (cat.noTarget() && cat.getHunger() < 5) {
-					cat.setTarget(food);
+		if (!win && !lose) {
+			if (time >= 6) {
+				nAlien++;
+				for (int i = 0; i < nAlien; i++) {
+					alienList.add(new Alien(rand.nextInt(width), 1000, 5));
 				}
-				if (food.getEated(cat.getHitbox()) && cat.getHunger() < 5) {
-					for (Cat temp : catList) {
-						temp.setTarget(null);
+				time = 0;
+			}
+
+			for (int i = 0; i < catList.size(); i++) {
+				Cat cat = catList.get(i);
+				cat.update(delta, this);
+				for (int j = 0; j < foodList.size(); j++) {
+					Food food = foodList.get(j);
+					if (cat.noTarget() && cat.getHunger() < 5) {
+						cat.setTarget(food);
 					}
-					cat.fed();
-					foodList.remove(food);
-					j--;
+					if (food.getEated(cat.getHitbox()) && cat.getHunger() < 5) {
+						for (Cat temp : catList) {
+							temp.setTarget(null);
+						}
+						cat.fed();
+						foodList.remove(food);
+						j--;
+					}
 				}
-			}
-			if (cat.getSpawnCoin()) {
-				coinList.add(new Coin((int) cat.getHitbox().x, (int) cat.getHitbox().y));
-				cat.setSpawnCoin();
-			}
-			if (cat.isDead()) {
-				catList.remove(cat);
-				nCat--;
-			}
-		}
-
-		for (int i = 0; i < coinList.size(); i++) {
-			Coin coin = coinList.get(i);
-			coin.update(delta);
-			if (coin.isCollected()) {
-				coinList.remove(coin);
-				i--;
-				player.addMoney(3);
-			}
-		}
-
-		for (int i = 0; i < alienList.size(); i++) {
-			Alien alien = alienList.get(i);
-			alien.update(delta, this);
-			for (int j = 0; j < catList.size(); j++) {
-				Cat cat = catList.get(j);
-				if (alien.noTarget()) {
-					alien.setTarget(cat);
+				if (cat.getSpawnCoin()) {
+					coinList.add(new Coin((int) cat.getHitbox().x, (int) cat.getHitbox().y));
+					cat.setSpawnCoin();
 				}
-				if (cat.getEated(alien.getHitbox())) {
-					alien.setTarget(null);
+				if (cat.isDead()) {
 					catList.remove(cat);
 					nCat--;
-					j--;
 				}
 			}
-			if (alien.isDead()) {
-				alienList.remove(alien);
-				i--;
+
+			for (int i = 0; i < coinList.size(); i++) {
+				Coin coin = coinList.get(i);
+				coin.update(delta);
+				if (coin.isCollected()) {
+					coinList.remove(coin);
+					i--;
+					player.addMoney(3);
+				}
+			}
+
+			for (int i = 0; i < alienList.size(); i++) {
+				Alien alien = alienList.get(i);
+				alien.update(delta, this);
+				for (int j = 0; j < catList.size(); j++) {
+					Cat cat = catList.get(j);
+					if (alien.noTarget()) {
+						alien.setTarget(cat);
+					}
+					if (cat.getEated(alien.getHitbox())) {
+						alien.setTarget(null);
+						catList.remove(cat);
+						nCat--;
+						j--;
+					}
+				}
+				if (alien.isDead()) {
+					alienList.remove(alien);
+					i--;
+				}
 			}
 		}
 
@@ -130,6 +141,14 @@ public class World {
 		} else {
 			clicked = true;
 		}
+	}
+	
+	public boolean getWin() {
+		return win;
+	}
+	
+	public boolean getLose() {
+		return lose;
 	}
 
 	public Player getPlayer() {
