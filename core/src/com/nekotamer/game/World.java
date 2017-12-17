@@ -49,10 +49,14 @@ public class World {
 			cat.update(delta, this);
 			for (int j = 0; j < foodList.size(); j++) {
 				Food food = foodList.get(j);
+				if(cat.noTarget()) {
+					cat.setTarget(food);
+				}
 				if (food.getEated(cat.getHitbox())) {
 					// System.out.println(i);
 					// Food i = foodList.get(foodList.indexOf(food));
 					// removedFoodList.add(food);
+					cat.setTarget(null);
 					foodList.remove(food);
 					j--;
 				}

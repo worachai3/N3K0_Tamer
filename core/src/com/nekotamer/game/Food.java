@@ -19,8 +19,8 @@ public class Food {
 
 	public boolean getEated(Rectangle other) {
 		hitbox = getHitbox();
-		if (hitbox.x >= other.x && hitbox.y >= other.y && hitbox.x + hitbox.width <= other.x + other.width
-				&& hitbox.y + hitbox.height <= other.y + other.height) {
+		if (Math.abs((hitbox.x + hitbox.width/2) - (other.x + other.width/2)) <= hitbox.width/2 + other.width/2
+			&& Math.abs((hitbox.y + hitbox.height/2) - (other.y + other.height/2)) <= hitbox.height/2 + other.height/2) {
 			System.out.println("eated");
 			return true;
 		} else {

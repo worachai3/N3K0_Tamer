@@ -14,7 +14,7 @@ public class Cat {
 	private int axisX = 0;
 	private int axisY = 0;
 
-	private static final int speed = 10;
+	private static final int speed = 3;
 
 	public Cat(int x, int y) {
 		// position = new Vector2(x, y);
@@ -23,8 +23,9 @@ public class Cat {
 
 	public boolean getEated(Rectangle other) {
 		hitbox = getHitbox();
-		if (hitbox.x >= other.x && hitbox.y >= other.y && hitbox.x + hitbox.width <= other.x + other.width
-				&& hitbox.y + hitbox.height <= other.y + other.height) {
+		if (Math.abs((hitbox.x + hitbox.width/2) - (other.x + other.width/2)) <= hitbox.width/2 + other.width/2
+			&& Math.abs((hitbox.y + hitbox.height/2) - (other.y + other.height/2)) <= hitbox.height/2 + other.height/2) {
+			System.out.println("eated");
 			return true;
 		} else {
 			return false;
@@ -39,7 +40,18 @@ public class Cat {
 		// hitbox.x += 5;
 		if (targetFood == null) {
 			randomMove(delta);
+		} else {
+			moveTowardTarget(delta, targetFood);
 		}
+	}
+
+	private void moveTowardTarget(float delta, Food food) {
+		Rectangle foodHitbox = food.getHitbox();
+		float dx = foodHitbox.x - hitbox.x;
+		float dy = foodHitbox.y - hitbox.y;
+		double distance = Math.sqrt(dx * dx + dy * dy);
+		hitbox.x = (float) (hitbox.x + (dx / distance * speed));
+		hitbox.y = (float) (hitbox.y + (dy / distance * speed));
 	}
 
 	private void randomMove(float delta) {
@@ -48,14 +60,13 @@ public class Cat {
 		int x = rand.nextInt(10);
 		int y = rand.nextInt(10);
 		double distance = Math.sqrt(x * x + y * y);
-		
 
 		if (time >= 3) {
 			axisX = rand.nextInt(2);
 			axisY = rand.nextInt(2);
 			time = 0;
 		}
-		
+
 		if (hitbox.x <= 0) {
 			axisX = 1;
 			time = -5;
@@ -70,26 +81,36 @@ public class Cat {
 			time = -5;
 			System.out.println("fuck");
 		}
-		if (hitbox.y + hitbox.height>= World.height) {
+		if (hitbox.y + hitbox.height >= World.height) {
 			axisY = 0;
 			time = -5;
 		}
-		
+
 		if (distance > 0) {
 			if (axisX == 1) {
-				hitbox.x += x / distance * speed * delta * 10;
+				hitbox.x += speed;
 			} else {
-				hitbox.x -= x / distance * speed * delta * 10;
+				hitbox.x -= speed;
 			}
 			if (axisY == 1) {
-				hitbox.y += y / distance * speed * delta * 10;
+				hitbox.y += speed;
 			} else {
-				hitbox.y -= y / distance * speed * delta * 10;
+				hitbox.y -= speed;
 			}
-			System.out.println("hitboxX: "+hitbox.x+" "+"hitboxY: "+hitbox.y+" "+"axisX: "+axisX+" "+" "+"axisY: "+axisY);
+			System.out.println("hitboxX: " + hitbox.x + " " + "hitboxY: " + hitbox.y + " " + "axisX: " + axisX + " "
+					+ " " + "axisY: " + axisY);
 		}
 	}
-
+	
+	public boolean noTarget() {
+		if (targetFood == null) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	
 	public void setTarget(Food target) {
 		targetFood = target;
 		System.out.println(targetFood);
