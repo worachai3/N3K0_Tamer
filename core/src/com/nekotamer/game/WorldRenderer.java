@@ -10,12 +10,14 @@ import com.badlogic.gdx.math.Rectangle;
 
 public class WorldRenderer {
 	private NekoTamer nekoTamer;
-	private World world;	
+	private World world;
 	private Alien alien;
 	private Cat cat;
+	private ArrayList<Alien> alienList;
+	private ArrayList<Cat> catList;
 	private ArrayList<Food> foodList;
-//	private Iterator<Food> foodList;
-	
+	// private Iterator<Food> foodList;
+
 	private Texture foodImg;
 	private Texture catImg;
 	private Texture alienImg;
@@ -24,8 +26,8 @@ public class WorldRenderer {
 		this.nekoTamer = nekoTamer;
 		this.world = world;
 
-		cat = world.getCat();
-		alien = world.getAlien();
+		catList = world.getCat();
+		alienList = world.getAlien();
 		foodList = world.getFood();
 
 		catImg = new Texture("cat.png");
@@ -35,19 +37,25 @@ public class WorldRenderer {
 
 	public void render(float delta, SpriteBatch batch) {
 
-//		Vector2 catPos = cat.getPosition();
-//		Vector2 alienPos = alien.getPosition();
-		Rectangle catHitbox = cat.getHitbox();
-		Rectangle alienHitbox = alien.getHitbox();
-		
+		// Vector2 catPos = cat.getPosition();
+		// Vector2 alienPos = alien.getPosition();
+
+
+
 		batch.begin();
-		for(Food food : foodList) {
-//			Vector2 foodPos = food.getPosition();
+		for (Food food : foodList) {
+			// Vector2 foodPos = food.getPosition();
 			Rectangle foodHitbox = food.getHitbox();
-			batch.draw(foodImg, foodHitbox.x, foodHitbox.y, foodHitbox.width, foodHitbox.height);	
+			batch.draw(foodImg, foodHitbox.x, foodHitbox.y, foodHitbox.width, foodHitbox.height);
 		}
-		batch.draw(catImg, catHitbox.x, catHitbox.y, catHitbox.width, catHitbox.height);
-		batch.draw(alienImg, alienHitbox.x, alienHitbox.y, alienHitbox.width, alienHitbox.height);
+		for (Cat cat : catList) {
+			Rectangle catHitbox = cat.getHitbox();
+			batch.draw(catImg, catHitbox.x, catHitbox.y, catHitbox.width, catHitbox.height);
+		}
+		for (Alien alien : alienList) {
+			Rectangle alienHitbox = alien.getHitbox();
+			batch.draw(alienImg, alienHitbox.x, alienHitbox.y, alienHitbox.width, alienHitbox.height);
+		}
 		batch.end();
 	}
 }
