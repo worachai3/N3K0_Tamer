@@ -12,28 +12,29 @@ public class BuyMenu {
 	private Rectangle hitbox;
 	private boolean clicked;
 	private boolean stop;
+	private Player player;
 
 	private int nCat;
+	
+	private static final int catPrice = 10;
 
-	public BuyMenu(int x, int y) {
+	public BuyMenu(int x, int y, Player player) {
 		hitbox = new Rectangle(x, y, 100, 200);
 		notHoverIcon = new Texture("catmenunothover.png");
 		hoverIcon = new Texture("catmenuhover.png");
 		stop = false;
+		this.player = player;
 	}
 
 	public void update(float delta) {
-		if (getClicked()) {
-			if (!stop) {
+		if (getClicked() && !stop) {
+			if (this.player.getMoney() >= 10) {
 				nCat += 1;
+				this.player.removeMoney(catPrice);
 				stop = true;
 				System.out.println(nCat);
 			}
 		}
-	}
-
-	public Rectangle getHitbox() {
-		return hitbox;
 	}
 
 	public void render(float delta, SpriteBatch batch) {

@@ -16,16 +16,18 @@ public class World {
 	private ArrayList<Cat> catList;
 	private ArrayList<Food> foodList;
 	private BuyMenu buyMenu;
+	private Player player;
 
 	private boolean clicked = false;
 
 	World(NekoTamer nekoTamer) {
 		this.nekoTamer = nekoTamer;
-		buyMenu = new BuyMenu(0, height - 200);
+		player = new Player();
+		buyMenu = new BuyMenu(0, height - 200, player);
 		alienList = new ArrayList<Alien>();
 		catList = new ArrayList<Cat>();
 		foodList = new ArrayList<Food>();
-
+		
 		// Start
 		catList.add(new Cat(100, 100, 5));
 		alienList.add(new Alien(800, 200, 5));

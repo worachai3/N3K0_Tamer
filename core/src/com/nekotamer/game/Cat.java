@@ -81,7 +81,6 @@ public class Cat {
 		int x = rand.nextInt(10);
 		int y = rand.nextInt(10);
 		double distance = Math.sqrt(x * x + y * y);
-		System.out.println(time);
 		if (time >= 1) {
 			axisX = rand.nextInt(2);
 			axisY = rand.nextInt(2);

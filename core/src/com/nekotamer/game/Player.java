@@ -7,12 +7,15 @@ public class Player {
 		money = 10;
 	}
 
-	public void addMoney() {
-		money += 5;
+	public void addMoney(int x) {
+		money += x;
 	}
 
+	public void removeMoney(int x) {
+		money -= x;
+	}
+	
 	public int getMoney() {
 		return money;
 	}
-
 }
