@@ -58,16 +58,26 @@ public class World {
 				}
 			}
 		}
-		
-		for(int i = 0;i < alienList.size(); i++) {
+
+		for (int i = 0; i < alienList.size(); i++) {
 			Alien alien = alienList.get(i);
 			alien.update(delta, this);
-			if(alien.isDead()) {
-				alienList.remove(alien);
-				i--;
+			for (int j = 0; j < catList.size(); j++) {
+				Cat cat = catList.get(j);
+				if (cat.getEated(alien.getHitbox())) {
+					// System.out.println(i);
+					// Food i = foodList.get(foodList.indexOf(food));
+					// removedFoodList.add(food);
+					catList.remove(cat);
+					j--;
+					if (alien.isDead()) {
+						alienList.remove(alien);
+						i--;
+					}
+				}
 			}
 		}
-		
+
 		if (Gdx.input.isButtonPressed(1) && !clicked) {
 			foodList.add(new Food(Gdx.input.getX(), height - Gdx.input.getY(), this));
 		}
@@ -78,6 +88,63 @@ public class World {
 			clicked = true;
 		}
 	}
+
+	public float getAngle(float x, float y, float x2, float y2) {
+		float angle = (float) Math.toDegrees(Math.atan2(y - y2, x - x2));
+
+		if (angle < 0) {
+			angle += 360;
+		}
+
+		return angle;
+	}
+
+	// private boolean catIsCloser(Alien alien, Cat cat, float oldDistance){
+	// // calculate angle from enemy to player
+	// Rectangle alienPos = alien.getHitbox();
+	// Rectangle catPos = cat.getHitbox();
+	// float angle = getAngle(alienPos.x, alienPos.y, catPos.x, catPos.y);
+	// // work out how much x and y will change in this step
+	// // math.cos and math.sin will be between -1 and +1
+	// // multiplying by (dt*speed) means the enemy will move speed pixels in one
+	// whole second
+	// float dx = (float) Math.cos(angle);
+	// float dy = (float) Math.sin(angle);
+	// float distance = (float) Math.sqrt(dx*dx+dy*dy);
+	// // move to our new x and y
+	// // alienPos.x = alienPos.x + dx
+	// // alienPos.y = alienPos.y + dy
+	// if (distance < oldDistance) {
+	// return true;
+	// } else {
+	// return false;
+	// }
+	// }
+
+	// private boolean foodIsCloser(Cat cat, Food food, float oldDistance){
+	// // calculate angle from enemy to player
+	// Rectangle foodPos = food.getHitbox();
+	// Rectangle catPos = cat.getHitbox();
+	// float angle = getAngle(foodPos.x, foodPos.y, catPos.x, catPos.y);
+	// System.out.println(angle);
+	// // work out how much x and y will change in this step
+	// // math.cos and math.sin will be between -1 and +1
+	// // multiplying by (dt*speed) means the enemy will move speed pixels in one
+	// whole second
+	// float dx = (float) Math.cos(angle);
+	// float dy = (float) Math.sin(angle);
+	// float distance = (float) Math.sqrt(dx*dx+dy*dy);
+	// // move to our new x and y
+	// // alienPos.x = alienPos.x + dx
+	// // alienPos.y = alienPos.y + dy
+	//// System.out.println(distance+" "+oldDistance);
+	// if (distance < oldDistance) {
+	// cat.setDistance(distance);
+	// return true;
+	// } else {
+	// return false;
+	// }
+	// }
 
 	public ArrayList<Food> getFood() {
 		return foodList;

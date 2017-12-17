@@ -32,7 +32,7 @@ public class Alien {
 	
 	public boolean getClicked(int x, int y) {
 		hitbox = getHitbox();
-		System.out.println(hitbox.x+"<="+x+"<="+(hitbox.x+hitbox.width)+"&&"+hitbox.y+"<="+y+"<="+hitbox.y+hitbox.height);
+		System.out.println(x+" "+y);
 		if (hitbox.x <= x && hitbox.y <= y && hitbox.x + hitbox.width >= x
 				&& hitbox.y + hitbox.height >= y) {
 			System.out.println("clicked");
