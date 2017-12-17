@@ -1,11 +1,12 @@
 package com.nekotamer.game;
 
 import java.util.ArrayList;
+//import java.util.Iterator;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
+//import com.badlogic.gdx.math.Vector2;
 
 public class WorldRenderer {
 	private NekoTamer nekoTamer;
@@ -13,11 +14,11 @@ public class WorldRenderer {
 	private Alien alien;
 	private Cat cat;
 	private ArrayList<Food> foodList;
+//	private Iterator<Food> foodList;
 	
 	private Texture foodImg;
 	private Texture catImg;
 	private Texture alienImg;
-
 
 	public WorldRenderer(NekoTamer nekotTamer, World world) {
 		this.nekoTamer = nekoTamer;
@@ -43,7 +44,7 @@ public class WorldRenderer {
 		for(Food food : foodList) {
 //			Vector2 foodPos = food.getPosition();
 			Rectangle foodHitbox = food.getHitbox();
-			batch.draw(foodImg, foodHitbox.x, foodHitbox.y, foodHitbox.width, foodHitbox.height);
+			batch.draw(foodImg, foodHitbox.x, foodHitbox.y, foodHitbox.width, foodHitbox.height);	
 		}
 		batch.draw(catImg, catHitbox.x, catHitbox.y, catHitbox.width, catHitbox.height);
 		batch.draw(alienImg, alienHitbox.x, alienHitbox.y, alienHitbox.width, alienHitbox.height);
