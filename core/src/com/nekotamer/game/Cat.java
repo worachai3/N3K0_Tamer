@@ -3,22 +3,31 @@ package com.nekotamer.game;
 import java.util.Random;
 
 import com.badlogic.gdx.math.Rectangle;
-//import com.badlogic.gdx.math.Vector2;
 
 public class Cat {
-	// private Vector2 position;
 	private Rectangle hitbox;
 	private Alien alien;
 	private Food targetFood;
+	
 	private float time;
+	private float hungerTime;
+	
 	private int axisX = 0;
 	private int axisY = 0;
+	private int hunger;
+	private boolean dead = false;
 
-	private static final int speed = 3;
+	private int speed = 3;
 
-	public Cat(int x, int y) {
+	public Cat(int x, int y, int hunger) {
 		// position = new Vector2(x, y);
 		hitbox = new Rectangle(x, y, 142, 119);
+		this.hunger = hunger;
+		hungerTime = 0;
+	}
+	
+	public int getHunger() {
+		return this.hunger;
 	}
 
 	public boolean getEated(Rectangle other) {
@@ -33,15 +42,27 @@ public class Cat {
 	}
 
 	public void update(float delta, World world) {
-		// alien = world.getAlien();
-		// if (getEated(alien.getHitbox())) {
-		// this.remove();
-		// }
-		// hitbox.x += 5;
 		if (targetFood == null) {
 			randomMove(delta);
 		} else {
 			moveTowardTarget(delta, targetFood);
+		}
+		if (hunger > 3) {
+			speed = 3;
+		}
+		else if (hunger > 1) {
+			speed = 2;
+		}
+		else if (hunger == 1) {
+			speed = 1;
+		}
+		hungerTime += delta;
+		if (hungerTime >= 6) {
+			this.hunger -= 1;
+			hungerTime = 0;
+		}
+		if (hunger <= 0) {
+			dead = true;
 		}
 	}
 
@@ -60,8 +81,8 @@ public class Cat {
 		int x = rand.nextInt(10);
 		int y = rand.nextInt(10);
 		double distance = Math.sqrt(x * x + y * y);
-
-		if (time >= 3) {
+		System.out.println(time);
+		if (time >= 1) {
 			axisX = rand.nextInt(2);
 			axisY = rand.nextInt(2);
 			time = 0;
@@ -69,19 +90,19 @@ public class Cat {
 
 		if (hitbox.x <= 0) {
 			axisX = 1;
-			time = -5;
+			time = (float) -0.5;
 		}
 		if (hitbox.y <= 0) {
 			axisY = 1;
-			time = -5;
+			time = (float) -0.5;
 		}
 		if (hitbox.x + hitbox.width >= World.width) {
 			axisX = 0;
-			time = -5;
+			time = (float) -0.5;
 		}
 		if (hitbox.y + hitbox.height >= World.height) {
 			axisY = 0;
-			time = -5;
+			time = (float) -0.5;
 		}
 
 		if (distance > 0) {
@@ -97,6 +118,15 @@ public class Cat {
 			}
 		}
 	}
+	
+	public void fed() {
+		hunger += 1;
+		hungerTime = 0;
+	}
+	
+	public boolean isDead() {
+		return dead;
+	}
 
 	public boolean noTarget() {
 		if (targetFood == null) {
@@ -109,10 +139,6 @@ public class Cat {
 	public void setTarget(Food target) {
 		targetFood = target;
 	}
-
-	// public Vector2 getPosition() {
-	// return position;
-	// }
 
 	public Rectangle getHitbox() {
 		return hitbox;

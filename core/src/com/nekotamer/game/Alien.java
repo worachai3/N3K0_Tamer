@@ -4,7 +4,6 @@ import java.util.Random;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Rectangle;
-//import com.badlogic.gdx.math.Vector2;
 
 public class Alien {
 	// private Vector2 position;
@@ -18,7 +17,6 @@ public class Alien {
 	private float time = 0;
 
 	public Alien(int x, int y, int hp) {
-		// position = new Vector2(x, y);
 		hitbox = new Rectangle(x, y, 226, 337);
 		this.hp = hp;
 	}
@@ -95,8 +93,7 @@ public class Alien {
 	}
 
 	public boolean getClicked(int x, int y) {
-//		hitbox = getHitbox();
-		if (hitbox.x <= x && hitbox.y <= y && hitbox.x + hitbox.width >= x && hitbox.y + hitbox.height >= y) {
+		if (hitbox.x <= x && hitbox.y <= 720 - y && hitbox.x + hitbox.width >= x && hitbox.y + hitbox.height >= 720 - y) {
 			System.out.println("clicked");
 			return true;
 		} else {
@@ -124,9 +121,6 @@ public class Alien {
 		return false;
 	}
 
-	// public Vector2 getPosition() {
-	// return position;
-	// }
 	public Rectangle getHitbox() {
 		return hitbox;
 	}
