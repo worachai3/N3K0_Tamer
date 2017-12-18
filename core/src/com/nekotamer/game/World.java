@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 
 public class World {
 	public static final int width = 1200;
@@ -60,7 +61,7 @@ public class World {
 
 		if (nCat <= 0) {
 			lose = true;
-		} else if (nCat >= 10) {
+		} else if (nCat >= 7) {
 			win = true;
 		}
 		if (!win && !lose) {
@@ -128,6 +129,21 @@ public class World {
 					alienList.remove(alien);
 					i--;
 				}
+			}
+		}
+		
+		if (win || lose) {
+			if (Gdx.input.isKeyPressed(Keys.SPACE)) {
+				alienList.clear();
+				catList.clear();
+				coinList.clear();
+				foodList.clear();
+				win = false;
+				lose = false;
+				// Start
+				catList.add(new Cat(100, 100, 5));
+				nCat++;
+				nAlien = 1;
 			}
 		}
 
