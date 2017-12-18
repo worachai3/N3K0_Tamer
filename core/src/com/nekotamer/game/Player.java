@@ -18,4 +18,8 @@ public class Player {
 	public int getMoney() {
 		return money;
 	}
+	
+	public void setMoney(int x) {
+		money = x;
+	}
 }

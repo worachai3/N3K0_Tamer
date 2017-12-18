@@ -144,6 +144,7 @@ public class World {
 				catList.add(new Cat(100, 100, 5));
 				nCat++;
 				nAlien = 1;
+				player.setMoney(10);
 			}
 		}
 
